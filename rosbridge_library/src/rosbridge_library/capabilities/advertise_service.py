@@ -1,6 +1,6 @@
 import fnmatch
-import rclpy
 
+import rclpy
 from rosbridge_library.capability import Capability
 from rosbridge_library.internal import message_conversion
 from rosbridge_library.internal.ros_loader import get_service_class
@@ -52,7 +52,9 @@ class AdvertisedServiceHandler:
         if request_id in self.request_futures:
             self.request_futures[request_id].set_result(res)
         else:
-            self.protocol.log("warning", f"Received service response for unrecognized id: {request_id}")
+            self.protocol.log(
+                "warning", f"Received service response for unrecognized id: {request_id}"
+            )
 
     def graceful_shutdown(self):
         """
