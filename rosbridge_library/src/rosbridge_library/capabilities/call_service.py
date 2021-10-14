@@ -48,7 +48,7 @@ class CallService(Capability):
     services_glob = None
 
     def __init__(self, protocol):
-        # Call superclas constructor
+        # Call superclass constructor
         Capability.__init__(self, protocol)
 
         # Register the operations that this capability provides
@@ -88,6 +88,14 @@ class CallService(Capability):
                 return
         else:
             self.protocol.log("debug", "No service security glob, not checking service call.")
+
+        # Check if the client is authorized
+        if not self.authorization_check(message):
+            self.protocol.log(
+                "warn",
+                "Client %s not authorized to call service %s" % (self.protocol.client_id, service),
+            )
+            return
 
         # Check for deprecated service ID, eg. /rosbridge/topics#33
         cid = extract_id(service, cid)

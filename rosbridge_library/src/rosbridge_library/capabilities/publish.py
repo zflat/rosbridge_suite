@@ -44,7 +44,7 @@ class Publish(Capability):
     topics_glob = None
 
     def __init__(self, protocol):
-        # Call superclas constructor
+        # Call superclass constructor
         Capability.__init__(self, protocol)
 
         # Register the operations that this capability provides
@@ -81,6 +81,15 @@ class Publish(Capability):
                 return
         else:
             self.protocol.log("debug", "No topic security glob, not checking publish.")
+
+        # Check if the client is authorized
+        if not self.authorization_check(message):
+            self.protocol.log(
+                "warn",
+                "Client %s not authorized to publish to topic %s"
+                % (self.protocol.client_id, topic),
+            )
+            return
 
         # Register as a publishing client, propagating any exceptions
         client_id = self.protocol.client_id

@@ -1,0 +1,14 @@
+# The client_connection_id field is the generated id for the client
+# connection requesting authentication.
+string client_connection_id
+
+# IP address of the client requesting authentication
+string remote_ip
+
+# List of name-value pairs sent as authentication arguments
+AuthenticationField[] fields
+
+---
+
+# If the connection has proper authentication
+bool authenticated

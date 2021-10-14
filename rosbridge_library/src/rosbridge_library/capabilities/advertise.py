@@ -88,7 +88,7 @@ class Advertise(Capability):
     topics_glob = None
 
     def __init__(self, protocol):
-        # Call superclas constructor
+        # Call superclass constructor
         Capability.__init__(self, protocol)
 
         # Register the operations that this capability provides
@@ -130,6 +130,14 @@ class Advertise(Capability):
                 return
         else:
             self.protocol.log("debug", "No topic security glob, not checking advertisement.")
+
+        # Check if the client is authorized
+        if not self.authorization_check(message):
+            self.protocol.log(
+                "warn",
+                "Client %s not authorized to advertise topic %s" % (self.protocol.client_id, topic),
+            )
+            return
 
         # Create the Registration if one doesn't yet exist
         if topic not in self._registrations:

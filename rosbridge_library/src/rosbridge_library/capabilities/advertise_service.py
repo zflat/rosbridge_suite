@@ -126,6 +126,15 @@ class AdvertiseService(Capability):
                 "debug", "No service security glob, not checking service advertisement."
             )
 
+        # Check if the client is authorized
+        if not self.authorization_check(message):
+            self.protocol.log(
+                "warn",
+                "Client %s not authorized to advertise service %s"
+                % (self.protocol.client_id, service_name),
+            )
+            return
+
         # check for an existing entry
         if service_name in self.protocol.external_service_list.keys():
             self.protocol.log(
