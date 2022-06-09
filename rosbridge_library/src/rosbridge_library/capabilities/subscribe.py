@@ -32,7 +32,7 @@
 
 import fnmatch
 from functools import partial
-from threading import Lock
+from threading import RLock
 
 from rosbridge_library.capability import Capability
 from rosbridge_library.internal.pngcompression import encode as encode_png
@@ -77,7 +77,7 @@ class Subscription:
         self.clients = {}
 
         self.handler = MessageHandler(None, self._publish)
-        self.handler_lock = Lock()
+        self.handler_lock = RLock()
         self.update_params()
 
     def unregister(self):
